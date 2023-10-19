@@ -1,10 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://dv66g0qfd04y5"]
+[gd_scene load_steps=9 format=3 uid="uid://dv66g0qfd04y5"]
 
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_7jmsc"]
 [ext_resource type="Texture2D" uid="uid://4734sbdo3ax5" path="res://assets/textures/bg.png" id="1_jat8o"]
 [ext_resource type="PackedScene" uid="uid://bk2xmwg5vnkff" path="res://scenes/player.tscn" id="2_p7s5b"]
 [ext_resource type="PackedScene" uid="uid://bh4btjgp2xys3" path="res://scenes/enemy_spawner.tscn" id="3_7yqcy"]
+[ext_resource type="Script" path="res://scripts/OuterBoundary.gd" id="4_lny3a"]
+[ext_resource type="FontFile" uid="uid://ckjqxx7r73ent" path="res://assets/font/Kenney Blocks.ttf" id="6_a0bkx"]
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="6_y7bkq"]
+
+[sub_resource type="Theme" id="Theme_clnun"]
+default_font = ExtResource("6_a0bkx")
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_7jmsc")
 
 [node name="Background" type="TextureRect" parent="."]
 z_index = -100
@@ -14,6 +22,77 @@ texture = ExtResource("1_jat8o")
 stretch_mode = 1
 
 [node name="Player" parent="." instance=ExtResource("2_p7s5b")]
-position = Vector2(360, 1100)
+position = Vector2(360, 960)
 
 [node name="EnemySpawner" parent="." instance=ExtResource("3_7yqcy")]
+
+[node name="OuterBoundary" type="Area2D" parent="."]
+visible = false
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_lny3a")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OuterBoundary"]
+build_mode = 1
+polygon = PackedVector2Array(-256, -256, 976, -256, 976, 1536, -256, 1536)
+
+[node name="UI" type="Node" parent="."]
+
+[node name="HUD" type="Panel" parent="UI" node_paths=PackedStringArray("health_bar", "shield_bar", "score_label")]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_clnun")
+script = ExtResource("6_y7bkq")
+health_bar = NodePath("Health")
+shield_bar = NodePath("Shield")
+score_label = NodePath("Score")
+
+[node name="ColorRect" type="ColorRect" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+color = Color(0.227451, 0.254902, 0.301961, 1)
+
+[node name="Score" type="Label" parent="UI/HUD"]
+layout_mode = 2
+offset_left = 372.0
+offset_right = 696.0
+offset_bottom = 111.0
+theme_override_font_sizes/font_size = 72
+text = "000000"
+horizontal_alignment = 2
+
+[node name="Health" type="ProgressBar" parent="UI/HUD"]
+custom_minimum_size = Vector2(300, 2.08165e-12)
+layout_mode = 2
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 336.0
+offset_bottom = 52.0
+step = 1.0
+
+[node name="Shield" type="ProgressBar" parent="UI/HUD"]
+custom_minimum_size = Vector2(300, 2.08165e-12)
+layout_mode = 2
+offset_left = 32.0
+offset_top = 68.0
+offset_right = 336.0
+offset_bottom = 96.0
+step = 1.0
+
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="health_init" from="Player" to="UI/HUD" method="_on_player_health_init"]
+[connection signal="health_updated" from="Player" to="UI/HUD" method="_on_player_health_updated"]
+[connection signal="shield_init" from="Player" to="UI/HUD" method="_on_player_shield_init"]
+[connection signal="shield_updated" from="Player" to="UI/HUD" method="_on_player_shield_updated"]
+[connection signal="area_entered" from="OuterBoundary" to="OuterBoundary" method="_on_area_entered"]

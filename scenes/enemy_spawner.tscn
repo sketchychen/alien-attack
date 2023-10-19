@@ -16,30 +16,30 @@ autostart = true
 [node name="SpawnLine" type="Node" parent="."]
 
 [node name="Point0" type="Marker2D" parent="SpawnLine"]
-position = Vector2(72, 64)
+position = Vector2(72, -64)
 
 [node name="Point1" type="Marker2D" parent="SpawnLine"]
-position = Vector2(144, 64)
+position = Vector2(144, -64)
 
 [node name="Point2" type="Marker2D" parent="SpawnLine"]
-position = Vector2(216, 64)
+position = Vector2(216, -64)
 
 [node name="Point3" type="Marker2D" parent="SpawnLine"]
-position = Vector2(288, 64)
+position = Vector2(288, -64)
 
 [node name="Point4" type="Marker2D" parent="SpawnLine"]
-position = Vector2(360, 64)
+position = Vector2(360, -64)
 
 [node name="Point5" type="Marker2D" parent="SpawnLine"]
-position = Vector2(432, 64)
+position = Vector2(432, -64)
 
 [node name="Point6" type="Marker2D" parent="SpawnLine"]
-position = Vector2(504, 64)
+position = Vector2(504, -64)
 
 [node name="Point7" type="Marker2D" parent="SpawnLine"]
-position = Vector2(576, 64)
+position = Vector2(576, -64)
 
 [node name="Point8" type="Marker2D" parent="SpawnLine"]
-position = Vector2(648, 64)
+position = Vector2(648, -64)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

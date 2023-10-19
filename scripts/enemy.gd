@@ -1,8 +1,10 @@
 extends Area2D
 
 
-
 @export var speed = 300
+@export var health = 1
+@export var damage = 1
+@export var points = 1
 
 @onready var hitbox = $Hitbox
 
@@ -26,6 +28,16 @@ func fly_straight(delta):
 	global_position.y += delta * speed
 
 
+func take_damage(value):
+	health -= value
+	if health <= 0:
+		SignalBus.enemy_died.emit(points)
+		die()
+
+func die():
+	queue_free()
+
+
 func _ready():
 	if waypoints:
 		global_position = waypoints.get_child(0).global_position
@@ -38,9 +50,5 @@ func _physics_process(delta):
 		fly_straight(delta)
 
 
-func _on_visible_on_screen_enabler_2d_screen_exited():
-	queue_free()
-
-
 func _on_body_entered(body):
-	pass # Replace with function body.
+	body.take_damage(damage)
