@@ -8,6 +8,8 @@ extends Area2D
 
 @onready var hitbox = $Hitbox
 
+signal died
+
 var waypoints
 var next_waypoint = 1
 
@@ -35,6 +37,7 @@ func take_damage(value):
 		die()
 
 func die():
+	died.emit()
 	queue_free()
 
 
@@ -48,6 +51,10 @@ func _physics_process(delta):
 		follow_waypoints(delta)
 	else:
 		fly_straight(delta)
+
+
+func _on_area_entered(area):
+	take_damage(area.damage)
 
 
 func _on_body_entered(body):

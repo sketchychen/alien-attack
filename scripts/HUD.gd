@@ -11,6 +11,7 @@ func _ready():
 	SignalBus.enemy_died.connect(_on_enemy_died)
 	pass
 
+
 func _on_enemy_died(points):
 	score += points
 	score_label.text = format_score(score)

@@ -6,6 +6,8 @@ extends Node
 @onready var spawn_timer = $SpawnTimer
 @onready var spawn_line = $SpawnLine
 
+signal enemy_spawn(enemy_instance)
+
 
 func spawn_enemy_with_waypoints(enemy, waypoints):
 	var enemy_instance = enemy.instantiate()
@@ -18,7 +20,7 @@ func spawn_enemy(enemy):
 	var random_spawn_position = spawn_line.get_children().pick_random().global_position
 	var enemy_instance = enemy.instantiate()
 	enemy_instance.global_position = random_spawn_position
-	add_child(enemy_instance)
+	enemy_spawn.emit(enemy_instance)
 	
 
 
