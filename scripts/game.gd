@@ -28,7 +28,7 @@ func _on_enemy_spawner_path_spawn(path_instance):
 
 
 func _on_enemy_died():
-	print("oh no")
+	pass
 
 
 func _input(event):

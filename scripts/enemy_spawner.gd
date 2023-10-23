@@ -28,7 +28,6 @@ func spawn_enemy(enemy):
 
 func spawn_path_enemy():
 	var path_instance = path_scene.instantiate()
-	print(path_instance)
 	emit_signal("path_spawn", path_instance)
 
 
