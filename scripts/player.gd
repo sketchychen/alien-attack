@@ -15,6 +15,8 @@ var screen_size
 
 @onready var rocket_container = get_node("RocketContainer")
 # does the same thing as if it were in _ready()
+@onready var asplode_sound = $AsplodeSound
+@onready var rocket_sound = $RocketSound
 
 
 func _ready():
@@ -53,9 +55,11 @@ func shoot():
 	rocket_container.add_child(rocket_instance)
 	rocket_instance.global_position = global_position
 	rocket_instance.global_position.y += -80
+	rocket_sound.play()
 
 
 func take_damage(value):
+	asplode_sound.play()
 	health -= value
 	emit_signal("health_updated", health)
 	if health <= 0:

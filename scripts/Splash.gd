@@ -17,5 +17,5 @@ func _on_game_start():
 
 func _on_game_over():
 	label.text = "Game Over"
-	label2.text = "Press Enter to Retry"
+	label2.text = "Press Enter\nto Retry"
 	visible = true

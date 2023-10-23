@@ -22,6 +22,11 @@ func _on_enemy_spawner_enemy_spawn(enemy_instance):
 	add_child(enemy_instance)
 
 
+func _on_enemy_spawner_path_spawn(path_instance):
+	add_child(path_instance)
+	path_instance.enemy.died.connect(_on_enemy_died)
+
+
 func _on_enemy_died():
 	print("oh no")
 
@@ -41,3 +46,4 @@ func update_pause_state(pause):
 	is_paused = pause
 	get_tree().paused = is_paused
 	
+

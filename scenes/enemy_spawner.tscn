@@ -1,15 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://bh4btjgp2xys3"]
+[gd_scene load_steps=5 format=3 uid="uid://bh4btjgp2xys3"]
 
 [ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="1_wb2mm"]
 [ext_resource type="PackedScene" uid="uid://dipny74p6hegq" path="res://scenes/enemy.tscn" id="2_q3hf8"]
-[ext_resource type="PackedScene" uid="uid://cg6xtech7i3xi" path="res://scenes/waypoints.tscn" id="3_m84op"]
+[ext_resource type="PackedScene" uid="uid://b0qjbkhhbv8cl" path="res://scenes/enemy_path.tscn" id="3_4mpgq"]
+
+[sub_resource type="PackedScene" id="PackedScene_v8klm"]
+_bundled = {
+"conn_count": 0,
+"conns": PackedInt32Array(),
+"editable_instances": [],
+"names": PackedStringArray("Waypoints", "Node", "Point0", "Marker2D", "position", "Point1", "Marker2D", "position", "Point2", "Marker2D", "position", "Point3", "Marker2D", "position", "Point4", "Marker2D", "position", "Point5", "Marker2D", "position"),
+"node_count": 7,
+"node_paths": [NodePath("."), NodePath("."), NodePath("."), NodePath("."), NodePath("."), NodePath(".")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 0, 0, 1073741824, 0, 3, 2, -1, 1, 4, 0, 0, 1073741825, 0, 6, 5, -1, 1, 7, 1, 0, 1073741826, 0, 9, 8, -1, 1, 10, 2, 0, 1073741827, 0, 12, 11, -1, 1, 13, 3, 0, 1073741828, 0, 15, 14, -1, 1, 16, 4, 0, 1073741829, 0, 18, 17, -1, 1, 19, 5, 0),
+"variants": [Vector2(27, 31), Vector2(668, 297), Vector2(51, 535), Vector2(668, 816), Vector2(44, 1049), Vector2(670, 1370)],
+"version": 3
+}
 
 [node name="EnemySpawner" type="Node"]
 script = ExtResource("1_wb2mm")
 enemy_scene = ExtResource("2_q3hf8")
-waypoints_scene = ExtResource("3_m84op")
+path_scene = ExtResource("3_4mpgq")
+waypoints_scene = SubResource("PackedScene_v8klm")
 
 [node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="PathTimer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
 
@@ -43,3 +61,4 @@ position = Vector2(576, -64)
 position = Vector2(648, -64)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="PathTimer" to="." method="_on_path_timer_timeout"]
