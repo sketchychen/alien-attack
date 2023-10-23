@@ -13,7 +13,7 @@ waypoints_scene = ExtResource("3_m84op")
 wait_time = 2.0
 autostart = true
 
-[node name="SpawnLine" type="Node" parent="."]
+[node name="SpawnLine" type="Node2D" parent="."]
 
 [node name="Point0" type="Marker2D" parent="SpawnLine"]
 position = Vector2(72, -64)

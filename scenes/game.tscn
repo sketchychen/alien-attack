@@ -1,10 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://dv66g0qfd04y5"]
+[gd_scene load_steps=16 format=3 uid="uid://dv66g0qfd04y5"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_7jmsc"]
 [ext_resource type="Texture2D" uid="uid://4734sbdo3ax5" path="res://assets/textures/bg.png" id="1_jat8o"]
+[ext_resource type="Script" path="res://scripts/ParallaxLayer.gd" id="2_fvdt1"]
 [ext_resource type="PackedScene" uid="uid://bk2xmwg5vnkff" path="res://scenes/player.tscn" id="2_p7s5b"]
 [ext_resource type="PackedScene" uid="uid://bh4btjgp2xys3" path="res://scenes/enemy_spawner.tscn" id="3_7yqcy"]
 [ext_resource type="Script" path="res://scripts/OuterBoundary.gd" id="4_lny3a"]
+[ext_resource type="Script" path="res://scripts/Splash.gd" id="4_mcgwy"]
 [ext_resource type="FontFile" uid="uid://ckjqxx7r73ent" path="res://assets/font/Kenney Blocks.ttf" id="6_a0bkx"]
 [ext_resource type="Script" path="res://scripts/HUD.gd" id="6_y7bkq"]
 
@@ -23,42 +25,17 @@ bg_color = Color(0.6, 0.12549, 0.12549, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oalt5"]
 bg_color = Color(0.12549, 0.545098, 0.701961, 1)
 
+[sub_resource type="Theme" id="Theme_rl00y"]
+default_font = ExtResource("6_a0bkx")
+default_font_size = 72
+
 [node name="Game" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_7jmsc")
-
-[node name="Background" type="TextureRect" parent="."]
-z_index = -100
-offset_right = 720.0
-offset_bottom = 1280.0
-texture = ExtResource("1_jat8o")
-stretch_mode = 1
-
-[node name="Player" parent="." instance=ExtResource("2_p7s5b")]
-position = Vector2(360, 960)
-
-[node name="EnemySpawner" parent="." instance=ExtResource("3_7yqcy")]
-
-[node name="OuterBoundary" type="Area2D" parent="."]
-visible = false
-position = Vector2(2.08165e-12, 2.08165e-12)
-collision_layer = 4
-collision_mask = 2
-script = ExtResource("4_lny3a")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OuterBoundary"]
-build_mode = 1
-polygon = PackedVector2Array(-256, -256, 976, -256, 976, 1536, -256, 1536)
 
 [node name="UI" type="Node" parent="."]
 
 [node name="HUD" type="Panel" parent="UI" node_paths=PackedStringArray("health_bar", "shield_bar", "score_label")]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -128.0
-grow_horizontal = 2
-grow_vertical = 0
 theme = SubResource("Theme_clnun")
 theme_override_styles/panel = SubResource("StyleBoxFlat_eelgq")
 script = ExtResource("6_y7bkq")
@@ -96,6 +73,82 @@ offset_bottom = 96.0
 theme_override_styles/background = SubResource("StyleBoxFlat_5ur4r")
 theme_override_styles/fill = SubResource("StyleBoxFlat_oalt5")
 step = 1.0
+
+[node name="Splash" type="Control" parent="UI" node_paths=PackedStringArray("label", "label2")]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_rl00y")
+script = ExtResource("4_mcgwy")
+label = NodePath("Label")
+label2 = NodePath("AnotherLabel")
+
+[node name="Label" type="Label" parent="UI/Splash"]
+layout_mode = 2
+offset_top = 480.0
+offset_right = 720.0
+offset_bottom = 591.0
+text = "PEW PEW
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnotherLabel" type="Label" parent="UI/Splash"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -360.0
+offset_top = 60.0
+offset_right = 360.0
+offset_bottom = 282.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+text = "Press Enter
+to Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+process_mode = 1
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+script = ExtResource("2_fvdt1")
+
+[node name="Background" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+z_index = -100
+offset_right = 720.0
+offset_bottom = 1280.0
+pivot_offset = Vector2(50, 2.08165e-12)
+texture = ExtResource("1_jat8o")
+stretch_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Player" parent="." instance=ExtResource("2_p7s5b")]
+process_mode = 1
+position = Vector2(360, 960)
+
+[node name="EnemySpawner" parent="." instance=ExtResource("3_7yqcy")]
+process_mode = 1
+
+[node name="OuterBoundary" type="Area2D" parent="."]
+process_mode = 1
+visible = false
+position = Vector2(2.08165e-12, 2.08165e-12)
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_lny3a")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="OuterBoundary"]
+build_mode = 1
+polygon = PackedVector2Array(-256, -256, 976, -256, 976, 1536, -256, 1536)
 
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_init" from="Player" to="UI/HUD" method="_on_player_health_init"]

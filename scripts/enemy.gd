@@ -13,8 +13,10 @@ signal died
 var waypoints
 var next_waypoint = 1
 
+
 func set_waypoints(waypoints_instance):
 	waypoints = waypoints_instance
+
 
 func follow_waypoints(delta):
 	if next_waypoint < waypoints.get_child_count():
@@ -35,6 +37,7 @@ func take_damage(value):
 	if health <= 0:
 		SignalBus.enemy_died.emit(points)
 		die()
+
 
 func die():
 	died.emit()

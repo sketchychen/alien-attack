@@ -64,4 +64,5 @@ func take_damage(value):
 
 func die():
 	emit_signal("died")
+	SignalBus.game_over.emit()
 	queue_free()
